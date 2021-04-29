@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/newsfeed"
+        android:enabled="true"
+        android:icon="@drawable/rss_symbol"
+        android:title="News Feed"/>
+
+
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@drawable/magnifying_glass"
+        android:title="Search"/>
+
+
+    <item
+        android:id="@+id/addpost"
+        android:enabled="true"
+        android:icon="@drawable/addpost"
+        android:title="Add Post"/>
+
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/profile"
+        android:title="Profile"/>
+
+
+    <item
+        android:id="@+id/chats"
+        android:enabled="true"
+        android:icon="@drawable/chat"
+        android:title="Chats"/>
+
+</menu>

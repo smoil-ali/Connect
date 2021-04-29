@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Connect</string>
+    <string name="expand">collaps</string>
+    <string name="collapse">more..</string>
+</resources>
