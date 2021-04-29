@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.reactive.connect.Activities.ChatActivity;
 import com.reactive.connect.Activities.PostActivity;
 import com.reactive.connect.Fragments.ProfileFragment;
 import com.reactive.connect.R;
@@ -76,6 +77,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .into(holder.binding.postImage
                 );
+
+        holder.binding.chat.setOnClickListener(v -> {
+            if (!post.getPublisher().equals(firebaseUser.getUid())){
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra(Constants.PARAMS,post.getPublisher());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.binding.conversation.setOnClickListener(v -> {
+            if (!post.getPublisher().equals(firebaseUser.getUid())){
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra(Constants.PARAMS,post.getPublisher());
+                context.startActivity(intent);
+            }
+
+        });
 
         holder.binding.toggle.setOnClickListener(new View.OnClickListener()
         {

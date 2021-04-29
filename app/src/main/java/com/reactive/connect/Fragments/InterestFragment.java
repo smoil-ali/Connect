@@ -75,7 +75,10 @@ public class InterestFragment extends Fragment implements InterestListener {
         binding.done.setOnClickListener(v -> {
             if (interestList.size() > 0){
                 model.setInterest(interestList);
-                adUser();
+                for (InterestClass interestClass:interestClasses){
+                    Log.i(TAG,interestClass.toString());
+                }
+                //adUser();
             }else {
                 Toast.makeText(activity, "Select at least one interest", Toast.LENGTH_SHORT).show();
             }

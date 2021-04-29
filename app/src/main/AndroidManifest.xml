@@ -28,6 +28,8 @@
         <activity android:name=".Activities.AddStoryActivity" />
         <activity android:name=".Activities.StoryActivity" />
         <activity android:name=".Activities.OptionsActivity"/>
+        <activity android:name=".Activities.ChatActivity"
+            />
     </application>
 
 </manifest>

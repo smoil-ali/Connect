@@ -1,6 +1,7 @@
 package com.reactive.connect.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,16 +44,17 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         InterestClass interestClass = list.get(position);
         holder.binding.text.setText(interestClass.getInterest());
-        holder.binding.setData(interestClass);
         holder.binding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i(TAG,isChecked+" status");
                 if (isChecked)
                     listener.onInterestChecked(interestClass.getInterest());
                 else
                     listener.onInterestUnChecked(interestClass.getInterest());
             }
         });
+        holder.binding.setData(interestClass);
     }
 
     @Override
@@ -65,6 +67,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemInterestBinding.bind(itemView);
+            binding.executePendingBindings();
         }
     }
 }

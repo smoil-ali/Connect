@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.reactive.connect.Fragments.ChatFragment;
 import com.reactive.connect.Fragments.HomeFragment;
 import com.reactive.connect.Fragments.InterestFragment;
 import com.reactive.connect.Fragments.LoginFragment;
@@ -74,6 +75,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.search:
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container,new SearchFragment())
+                        .commit();
+                return true;
+            case R.id.chats:
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container,new ChatFragment())
                         .commit();
                 return true;
             case R.id.addpost:

@@ -10,6 +10,8 @@ public class Constants {
     public final static String USER_ID = "userName";
     public final static String POST = "Post";
     public final static String STORY = "Story";
+    public final static String CHATS = "Chats";
+    public final static String MESSAGES = "Messages";
 
 
 }

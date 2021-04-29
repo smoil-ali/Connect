@@ -105,8 +105,8 @@
                 android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:id="@+id/like"
                     android:src="@drawable/disable_like"/>
 
@@ -120,6 +120,25 @@
                     android:layout_toEndOf="@id/like"
                     android:text="0"
                     android:id="@+id/likes"/>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/chat"
+                    android:src="@drawable/icons_comment"
+                    android:layout_toEndOf="@id/likes"
+                    android:layout_marginStart="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Conversation"
+                    android:textSize="20sp"
+                    android:layout_marginStart="5dp"
+                    android:textColor="#C3CBCE"
+                    android:textStyle="bold"
+                    android:id="@+id/conversation"
+                    android:layout_toEndOf="@id/chat"/>
 
 
 
