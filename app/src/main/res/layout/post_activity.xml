@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+
+        <variable
+            name="data"
+            type="com.reactive.connect.model.PostClass" />
+    </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -101,7 +107,9 @@
                         android:layout_height="wrap_content"
                         android:hint="Description....."
                         android:background="@color/white"
-                        android:id="@+id/description"/>
+                        android:id="@+id/description"
+                        android:text="@={data.description}"
+                        />
 
                 </androidx.cardview.widget.CardView>
             </LinearLayout>

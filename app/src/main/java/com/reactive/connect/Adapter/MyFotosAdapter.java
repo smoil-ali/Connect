@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.reactive.connect.Activities.PostActivity;
 import com.reactive.connect.Fragments.ProfileFragment;
 import com.reactive.connect.R;
 import com.reactive.connect.Utils.Constants;
@@ -206,8 +207,7 @@ public class MyFotosAdapter extends RecyclerView.Adapter<MyFotosAdapter.ImageVie
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.edit:
-//                                editPost(post.getPostId());
-
+                                editPost(post);
                                 return true;
                             case R.id.delete:
                                 final String id = post.getPostId();
@@ -251,6 +251,12 @@ public class MyFotosAdapter extends RecyclerView.Adapter<MyFotosAdapter.ImageVie
             binding = ItemPostBinding.bind(itemView);
             imgbounce = AnimationUtils.loadAnimation(context, R.anim.imgbounce);
         }
+    }
+
+    private void editPost(PostClass postClass) {
+        Intent intent = new Intent(context, PostActivity.class);
+        intent.putExtra(Constants.PARAMS,postClass);
+        context.startActivity(intent);
     }
 
     private void publisherInfo(final ImageView image_profile, final TextView username, final String userid){

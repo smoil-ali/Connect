@@ -43,6 +43,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         InterestClass interestClass = list.get(position);
         holder.binding.text.setText(interestClass.getInterest());
+        holder.binding.setData(interestClass);
         holder.binding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

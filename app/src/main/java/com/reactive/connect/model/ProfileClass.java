@@ -51,7 +51,7 @@ public class ProfileClass extends BaseObservable implements Serializable {
     public String getFullName() {
         if (fullName == null)
             return "";
-        return fullName;
+        return fullName.toLowerCase();
     }
 
     public void setFullName(String fullName) {

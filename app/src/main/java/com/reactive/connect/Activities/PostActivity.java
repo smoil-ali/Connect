@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -55,12 +56,19 @@ public class PostActivity extends AppCompatActivity {
     PostClass postClass;
     ProgressDialog progressDialog;
     ProfileClass profileClass;
+    boolean isEdit;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.post_activity);
         postClass = new PostClass();
         profileClass = Helper.fromStringToProfile(Helper.getUserInfo(this));
+        if(getIntent().getExtras() != null){
+            postClass = (PostClass)getIntent().getExtras().getSerializable(Constants.PARAMS);
+            Glide.with(this).load(postClass.getPostImage()).into(binding.imageAdded);
+            isEdit = true;
+        }
+        binding.setData(postClass);
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Post");
         progressDialog.setMessage("wait,while your post is being uploading...");
@@ -79,7 +87,12 @@ public class PostActivity extends AppCompatActivity {
         binding.post.setOnClickListener(v -> {
             if (isValid()){
                 progressDialog.show();
-                uploadImage();
+                if (filePath == null && isEdit){
+                    updatePost();
+                }else {
+                    uploadImage();
+                }
+
             }
         });
 
@@ -88,9 +101,11 @@ public class PostActivity extends AppCompatActivity {
 
     boolean isValid(){
         if (binding.description.getText().toString().trim().isEmpty()){
+            Toast.makeText(this, "Description is empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (filePath == null){
+        if (filePath == null && postClass.getPostImage().isEmpty()){
+            Toast.makeText(this, "Add Image", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -126,7 +141,10 @@ public class PostActivity extends AppCompatActivity {
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!uriTask.isComplete());
                         downloadUrl = uriTask.getResult().toString();
-                        addPost();
+                        if (isEdit)
+                            updatePost();
+                        else
+                            addPost();
                     })
                     .addOnFailureListener(e -> {
                         progressDialog.dismiss();
@@ -136,6 +154,30 @@ public class PostActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    void updatePost(){
+        postClass.setDescription(binding.description.getText().toString());
+        if (downloadUrl != null)
+            postClass.setPostImage(downloadUrl);
+        postClass.setPublisher(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference = firebaseDatabase.getReference(Constants.POST);
+        databaseReference.child(postClass.getPostId())
+                .setValue(postClass)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        progressDialog.dismiss();
+                        onBackPressed();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Log.i(TAG,e.getMessage());
+                    }
+                });
     }
 
     void addPost(){

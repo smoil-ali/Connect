@@ -175,6 +175,7 @@
                     android:text="Male"
                     android:textColor="@color/black"
                     android:id="@+id/male"
+                    android:checked="true"
                     />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
