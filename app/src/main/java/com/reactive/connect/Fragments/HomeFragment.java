@@ -1,5 +1,6 @@
 package com.reactive.connect.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.reactive.connect.Activities.HomeActivity;
+import com.reactive.connect.Activities.OptionsActivity;
 import com.reactive.connect.Adapter.PostAdapter;
 import com.reactive.connect.Adapter.StoryAdapter;
 import com.reactive.connect.R;
@@ -60,6 +62,13 @@ public class HomeFragment extends Fragment {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
         binding.recyclerView.setAdapter(postAdapter);
+
+        binding.settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), OptionsActivity.class));
+            }
+        });
 
 
 

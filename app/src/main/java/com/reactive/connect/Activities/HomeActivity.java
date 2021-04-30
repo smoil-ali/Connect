@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,12 +14,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.reactive.connect.Fragments.ChatFragment;
 import com.reactive.connect.Fragments.HomeFragment;
 import com.reactive.connect.Fragments.InterestFragment;
 import com.reactive.connect.Fragments.LoginFragment;
 import com.reactive.connect.Fragments.ProfileFragment;
 import com.reactive.connect.Fragments.ProfileInterestFragment;
 import com.reactive.connect.Fragments.RegisterFragment;
+import com.reactive.connect.Fragments.SearchFragment;
 import com.reactive.connect.R;
 import com.reactive.connect.Utils.Constants;
 import com.reactive.connect.databinding.ActivityHomeBinding;
@@ -28,14 +31,25 @@ import com.reactive.connect.model.ProfileClass;
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     final String TAG =HomeActivity.class.getSimpleName();
-    ActivityHomeBinding binding;
+    public ActivityHomeBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_home);
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this);
-        if (savedInstanceState == null){
-            binding.bottomNavigation.setSelectedItemId(R.id.profile);
+
+
+        Bundle intent = getIntent().getExtras();
+        if (intent != null){
+            String publisher = intent.getString("publisherid");
+            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+            editor.putString("profileid", publisher);
+            editor.apply();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                    new ProfileFragment()).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                    new HomeFragment()).commit();
         }
 
     }
@@ -58,8 +72,19 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                         .add(R.id.container,new HomeFragment())
                         .commit();
                 return true;
+            case R.id.search:
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container,new SearchFragment())
+                        .commit();
+                return true;
+            case R.id.chats:
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container,new ChatFragment())
+                        .commit();
+                return true;
             case R.id.addpost:
                 startActivity(new Intent(this, PostActivity.class));
+                finish();
                 return true;
         }
         return true;
@@ -73,4 +98,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 .addToBackStack(Constants.INTEREST_FRAGMENT)
                 .commit();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onPause();
+
+    }
+
 }

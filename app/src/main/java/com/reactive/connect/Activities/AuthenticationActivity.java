@@ -14,6 +14,7 @@ import com.reactive.connect.Fragments.LoginFragment;
 import com.reactive.connect.Fragments.RegisterFragment;
 import com.reactive.connect.R;
 import com.reactive.connect.Utils.Constants;
+import com.reactive.connect.Utils.Helper;
 import com.reactive.connect.databinding.ActivityAuthenticationBinding;
 
 public class AuthenticationActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -28,7 +29,6 @@ public class AuthenticationActivity extends AppCompatActivity implements BottomN
         if (savedInstanceState == null){
             binding.bottomNavigation.setSelectedItemId(R.id.login);
         }
-
 
 
     }

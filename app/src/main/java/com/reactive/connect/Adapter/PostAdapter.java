@@ -1,6 +1,8 @@
 package com.reactive.connect.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.reactive.connect.Activities.ChatActivity;
+import com.reactive.connect.Activities.PostActivity;
 import com.reactive.connect.Fragments.ProfileFragment;
 import com.reactive.connect.R;
 import com.reactive.connect.Utils.Constants;
@@ -73,6 +77,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .into(holder.binding.postImage
                 );
+
+        holder.binding.chat.setOnClickListener(v -> {
+            if (!post.getPublisher().equals(firebaseUser.getUid())){
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra(Constants.PARAMS,post.getPublisher());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.binding.conversation.setOnClickListener(v -> {
+            if (!post.getPublisher().equals(firebaseUser.getUid())){
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra(Constants.PARAMS,post.getPublisher());
+                context.startActivity(intent);
+            }
+
+        });
 
         holder.binding.toggle.setOnClickListener(new View.OnClickListener()
         {
@@ -197,8 +218,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.edit:
-//                                editPost(post.getPostId());
-
+                                editPost(post);
                                 return true;
                             case R.id.delete:
                                 final String id = post.getPostId();
@@ -229,6 +249,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     }
 
+
+
     @Override
     public int getItemCount() {
         return postClassList.size();
@@ -242,6 +264,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             binding = ItemPostBinding.bind(itemView);
             imgbounce = AnimationUtils.loadAnimation(context, R.anim.imgbounce);
         }
+    }
+    private void editPost(PostClass postClass) {
+        Intent intent = new Intent(context, PostActivity.class);
+        intent.putExtra(Constants.PARAMS,postClass);
+        context.startActivity(intent);
     }
 
     private void publisherInfo(final ImageView image_profile, final TextView username, final String userid){

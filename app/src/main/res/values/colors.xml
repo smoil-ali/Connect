@@ -20,4 +20,10 @@
     <color name="transparent">#00FDFDFD</color>
     <color name="yellow_dark">#D97D54</color>
     <color name="red">#E61414</color>
+
+    <color name="background">#dddddd</color>
+
+    <color name="colorBackground">#7E57C2</color>
+    <color name="colorButton">#d67601</color>
+    <color name="LikedColor">#3F79ED</color>
 </resources>

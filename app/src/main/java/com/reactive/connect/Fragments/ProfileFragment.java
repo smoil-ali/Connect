@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.reactive.connect.Activities.AuthenticationActivity;
+import com.reactive.connect.Activities.EditProfileActivity;
 import com.reactive.connect.Activities.HomeActivity;
 import com.reactive.connect.Adapter.MyFotosAdapter;
 import com.reactive.connect.R;
@@ -65,6 +67,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ProfileFragment extends Fragment {
 
 
+    final String TAG = ProfileFragment.class.getSimpleName();
     ImageView image_profile, logout;
     TextView posts,fullname, bio, username;
     Button edit_profile;
@@ -81,7 +84,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView_saves;
     private List<PostClass> postList_saves;
 
-    ImageButton my_fotos, saved_fotos;
+    ProfileClass user;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -92,7 +95,9 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
         profileid = prefs.getString("profileid", "none");
-
+        if (profileid.equals("none")){
+            profileid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
         fullname = view.findViewById(R.id.fullname);
@@ -119,7 +124,10 @@ public class ProfileFragment extends Fragment {
         myFotos();
 
         if (profileid.equals(firebaseUser.getUid())){
+            edit_profile.setVisibility(View.VISIBLE);
             edit_profile.setText("Edit Profile");
+        }else {
+            edit_profile.setVisibility(View.GONE);
         }
 
         edit_profile.setOnClickListener(new View.OnClickListener() {
@@ -128,9 +136,9 @@ public class ProfileFragment extends Fragment {
                 String btn = edit_profile.getText().toString();
 
                 if (btn.equals("Edit Profile")){
-
-         //           startActivity(new Intent(getContext(), EditProfileActivity.class));
-                    Toast.makeText(getContext(), "edit", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(),EditProfileActivity.class);
+                    intent.putExtra(Constants.PARAMS,user);
+                    startActivity(intent);
 
                 } else if (btn.equals("follow")){
 
@@ -154,7 +162,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(getContext())
-                        .setIcon(R.drawable.logo_pineka)
+                        .setIcon(R.drawable.logout)
                         .setTitle("Log Out Application")
                         .setMessage("Are you want to log out?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener()
@@ -162,8 +170,10 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 FirebaseAuth.getInstance().signOut();
-                                startActivity(new Intent(getContext(), HomeActivity.class)
+                                Helper.setLogin(getContext(),false);
+                                startActivity(new Intent(getContext(),AuthenticationActivity.class)
                                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                getActivity().finish();
                             }
 
                         })
@@ -199,7 +209,7 @@ public class ProfileFragment extends Fragment {
                 if (getContext() == null){
                     return;
                 }
-                ProfileClass user = dataSnapshot.getValue(ProfileClass.class);
+                user = dataSnapshot.getValue(ProfileClass.class);
 
                 if (user.getImage() != null || user.getImage() != ""){
                     Glide.with(getContext()).load(user.getImage()).into(image_profile);

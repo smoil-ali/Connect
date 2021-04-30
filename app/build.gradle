@@ -73,4 +73,13 @@ dependencies {
 
     //android animation
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
+
+    //shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //----GETTING IMAGE FROM URL AND ADDING TO HOLDER----
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.firebaseui:firebase-ui-database:6.0.2'
+
 }

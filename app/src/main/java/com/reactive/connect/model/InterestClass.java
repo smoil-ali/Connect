@@ -36,4 +36,12 @@ public class InterestClass extends BaseObservable implements Serializable {
         this.checked = checked;
         notifyPropertyChanged(BR.checked);
     }
+
+    @Override
+    public String toString() {
+        return "InterestClass{" +
+                "interest='" + interest + '\'' +
+                ", checked=" + checked +
+                '}';
+    }
 }
